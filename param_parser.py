@@ -1,0 +1,67 @@
+"""Parameters used in the model"""
+
+import argparse
+
+import torch
+device = torch.device('cuda')
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="MCN4Rec")
+    parser.add_argument('--device', type=str, default=device, help='')
+
+    """Data set"""
+    parser.add_argument("--dataset", nargs="?", default="NYC")
+    parser.add_argument("--data_path", nargs="?", default="./data/", help="Input data path.")
+    parser.add_argument('--epoch', type=int, default=400, help='number of epochs')
+    parser.add_argument('--batch_size', type=int, default=16, help='batch size')
+    parser.add_argument('--batch_size_view', type=int, default=1, help='batch size_view')
+    parser.add_argument('--batch_size_1', type=int, default=16, help='batch size')
+    parser.add_argument('--test_batch_size', type=int, default=16, help='batch size')
+    parser.add_argument('--dim', type=int, default=128, help='embedding size')
+    parser.add_argument('--l2', type=float, default=1e-5, help='l2 regularization weight')
+    parser.add_argument('--lr', type=float, default=3e-3, help='learning rate')  # default = 1e-4
+    parser.add_argument('--sim_regularity', type=float, default=1e-4, help='regularization weight for latent factor')
+    parser.add_argument("--inverse_r", type=bool, default=True, help="consider inverse relation or not")
+    parser.add_argument("--node_dropout", type=bool, default=True, help="consider node dropout or not")
+    parser.add_argument("--node_dropout_rate", type=float, default=0.5, help="ratio of node dropout")
+    parser.add_argument("--mess_dropout", type=bool, default=True, help="consider message dropout or not")
+    parser.add_argument("--mess_dropout_rate", type=float, default=0.1, help="ratio of node dropout")
+    parser.add_argument("--batch_test_flag", type=bool, default=True, help="use gpu or not")
+    parser.add_argument("--channel", type=int, default=64, help="hidden channels for model")
+    parser.add_argument("--cuda", type=bool, default=True, help="use gpu or not")
+    parser.add_argument("--gpu_id", type=int, default=[0,1,2,3], help="gpu id")
+    parser.add_argument('--Ks', nargs='?', default='[5, 10, 20, 50, 100]', help='Output sizes of every layer')
+    parser.add_argument('--test_flag', nargs='?', default='part',
+                        help='Specify the test type from {part, full}, indicating whether the reference is done in mini-batch')
+    parser.add_argument("--ind", type=str, default='mi', help="Independence modeling: mi, distance, cosine")
+    parser.add_argument('--short-traj-thres', type=int, default=2, help='Remove over-short trajectory')
+    parser.add_argument('--time-units', type=int, default=48, help='Time unit is 0.5 hour, 24/0.5=48')
+    parser.add_argument('--time-feature', type=str, default='norm_in_day_time', help='The name of time feature in the data')
+    parser.add_argument('--poi-embed-dim', type=int, default=128, help='POI embedding dimensions')
+    parser.add_argument('--user-embed-dim', type=int, default=128, help='User embedding dimensions')
+    parser.add_argument('--gcn-dropout', type=float, default=0.3, help='Dropout rate for gcn')
+    parser.add_argument('--gcn-nhid', type=list, default=[32, 64], help='List of hidden dims for gcn layers')
+    parser.add_argument('--transformer-nhid', type=int, default=1024, help='Hid dim in TransformerEncoder')
+    parser.add_argument('--transformer-nlayers', type=int, default=2, help='Num of TransformerEncoderLayer')
+    parser.add_argument('--transformer-nhead', type=int, default=2, help='Num of heads in multiheadattention')
+    parser.add_argument('--transformer-dropout', type=float, default=0.3, help='Dropout rate for transformer')
+    parser.add_argument('--time-embed-dim', type=int, default=128, help='Time embedding dimensions')
+    parser.add_argument('--cat-embed-dim', type=int, default=128, help='Category embedding dimensions')
+    parser.add_argument('--time-loss-weight', type=int, default=10, help='Scale factor for the time loss term')
+    parser.add_argument('--node-attn-nhid', type=int, default=128, help='Node attn map hidden dimensions')
+    parser.add_argument('--lr-scheduler-factor', type=float, default=0.1, help='Learning rate scheduler factor')
+    parser.add_argument('--weight_decay', type=float, default=5e-4, help='Weight decay (L2 loss on parameters).')
+    parser.add_argument('--context_hops', type=int, default=2, help='number of context hops')
+    parser.add_argument("--save", type=bool, default=False, help="save model or not")
+    parser.add_argument("--out_dir", type=str, default="./weights/", help="output directory for model")
+    parser.add_argument('--save-weights', action='store_true', default=True, help='whether save the model')
+    parser.add_argument('--save-embeds', action='store_true', default=False, help='whether save the embeddings')
+    parser.add_argument('--workers',type=int, default=0, help='Num of workers for dataloader.')
+    parser.add_argument('--project', default='./run/train', help='save to project/name')
+    parser.add_argument('--name', default='exp', help='save to project/name')
+    parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
+    parser.add_argument('--no-cuda', action='store_true', default=False, help='Disables CUDA training.')
+    parser.add_argument('--mode', type=str, default='client', help='python console use only')
+    parser.add_argument('--port', type=int, default=64973, help='python console use only')
+
+    return parser.parse_args()
