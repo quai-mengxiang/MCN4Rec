@@ -16,5 +16,8 @@ pip install -r requirements.txt
 - All hyper-parameters are defined in `param_parser.py`
 - 
 
+## Datasets
+- The raw data can be found at the following open source.
+    - [Foursqure (NYC and TKY)](https://sites.google.com/site/yangdingqi/home/foursquare-dataset?authuser=0).
 
 
