@@ -18,6 +18,6 @@ pip install -r requirements.txt
 
 ## Datasets
 - The raw data can be found at the following open source.
-    - [Foursqure (NYC and TKY)](https://sites.google.com/site/yangdingqi/home/foursquare-dataset?authuser=0).
+    - [Foursqure (NYC and TKY and SIN and PHO)](https://sites.google.com/site/yangdingqi/home/foursquare-dataset?authuser=0).
 
 
